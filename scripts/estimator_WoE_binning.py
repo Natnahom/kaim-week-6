@@ -46,7 +46,7 @@ def calulate_iv_wrapper(df, var, target, global_bt=1, global_gt=1):
     # Call the original calculate_iv function
     return calulate_iv(df_renamed, var, global_bt, global_gt), df_renamed
 
-def woe_transformation(df,feature, target, global_bt=1, global_gt=1, min_sample=1):
+def woe_transformation(df, feature, target, global_bt=1, global_gt=1, min_sample=1):
     """
     Perform WOE transformation on a specified feature and calculate its Information Value (IV).
     
@@ -69,9 +69,11 @@ def woe_transformation(df,feature, target, global_bt=1, global_gt=1, min_sample=
         df_reduced.loc[:, 'woe_' + feature] = proc_woe_continuous(
             df_reduced, feature, global_bt, global_gt, min_sample
         )
+        
+        # Calculate Information Value (IV)
+        iv_value = calulate_iv(df_reduced, 'woe_' + feature, global_bt, global_gt)
+        eval_summary = "Evaluation summary here..."  # Replace with actual summary logic if needed
+
+        return df_reduced, iv_value, eval_summary
     else:
         raise ValueError("Feature must be numeric (continuous) for this function.")
-
-    # Calculate Information Value (IV)
-
-    return df_reduced
