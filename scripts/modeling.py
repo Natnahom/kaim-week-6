@@ -28,15 +28,31 @@ def preprocess_data(df, target_column):
     if target_column not in df.columns:
         raise ValueError(f"Target column '{target_column}' not found in DataFrame.")
     
-    # Identify categorical and numerical columns
+    # # Convert TransactionStartTime to datetime and extract useful features
+    # if 'TransactionStartTime' in df.columns:
+    #     df['TransactionStartTime'] = pd.to_datetime(df['TransactionStartTime'])
+    #     df['TransactionHour'] = df['TransactionStartTime'].dt.hour
+    #     df['TransactionDay'] = df['TransactionStartTime'].dt.day
+    #     df['TransactionMonth'] = df['TransactionStartTime'].dt.month
+    #     df['TransactionYear'] = df['TransactionStartTime'].dt.year
+    #     df = df.drop(columns=['TransactionStartTime'])  # Drop the original column
+    
+    # Check columns after creating new features
+    print("Columns after feature extraction:", df.columns.tolist())
+    
+    # Identify categorical and numerical columns (excluding the target column)
     categorical_cols = df.select_dtypes(include=['object']).columns.tolist()
     numerical_cols = df.select_dtypes(exclude=['object']).columns.tolist()
+    
+    # Remove the target column from numerical_cols
+    if target_column in numerical_cols:
+        numerical_cols.remove(target_column)
     
     # Define the preprocessing steps
     preprocessor = ColumnTransformer(
         transformers=[
             ('num', 'passthrough', numerical_cols),  # Keep numerical columns as is
-            ('cat', OneHotEncoder(), categorical_cols)  # One-hot encode categorical columns
+            ('cat', OneHotEncoder(handle_unknown='ignore'), categorical_cols)  # One-hot encode categorical columns
         ])
     
     # Split the data into features and target
