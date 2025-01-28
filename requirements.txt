@@ -5,3 +5,7 @@ matplotlib
 pytest
 scikit-learn
 woe
+fastapi
+uvicorn
+joblib
+pandas
