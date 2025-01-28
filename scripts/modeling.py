@@ -6,6 +6,9 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.compose import ColumnTransformer
 
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import RandomizedSearchCV
+
 # Load Data Function
 def load_data2(file_path):
     """Load the dataset from a CSV file."""
@@ -78,16 +81,17 @@ def train_logistic_regression(X_train, y_train):
 
 # Hyperparameter Tuning for Random Forest
 def tune_random_forest(X_train, y_train):
-    """Perform hyperparameter tuning for Random Forest using Grid Search."""
-    param_grid_rf = {
-        'n_estimators': [50, 100, 200],
-        'max_depth': [None, 10, 20],
-        'min_samples_split': [2, 5, 10]
+    """Perform hyperparameter tuning for Random Forest using Randomized Search."""
+    param_dist_rf = {
+        'n_estimators': [50],
+        'max_depth': [None],
+        'min_samples_split': [2]
     }
     model = RandomForestClassifier()
-    grid_search = GridSearchCV(estimator=model, param_grid=param_grid_rf, scoring='accuracy', cv=5, n_jobs=-1)
-    grid_search.fit(X_train, y_train)
-    return grid_search.best_estimator_
+    randomized_search = RandomizedSearchCV(estimator=model, param_distributions=param_dist_rf, 
+                                           scoring='accuracy', n_iter=5, cv=3, n_jobs=-1, random_state=42)
+    randomized_search.fit(X_train, y_train)
+    return randomized_search.best_estimator_
 
 # Evaluate Models
 def evaluate_model(model, X_test, y_test):
