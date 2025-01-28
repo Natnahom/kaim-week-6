@@ -165,6 +165,62 @@ Model Development
 ## Results
 The model's performance is evaluated based on accuracy and other relevant metrics. Results are printed to the console and can be further analyzed.
 
+# Task 5 - Fraud Detection API 
+
+## Overview
+
+This FastAPI application serves as a Fraud Detection API, utilizing a trained Random Forest model to predict fraudulent transactions. The API provides endpoints for making predictions based on user-provided input data.
+
+## Features
+
+- **Predict Fraudulent Transactions**: Submit transaction data to receive predictions on whether a transaction is fraudulent.
+- **Model Evaluation**: The application includes model evaluation metrics for assessing performance.
+
+## Requirements
+
+- Python 3.7+
+- FastAPI
+- Uvicorn
+- Joblib (for loading the model)
+- Scikit-learn (for model training and evaluation)
+- Pydantic (for data validation)
+
+## Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone <repository-url>
+   cd fraud_detection_api
+    ```
+
+2. Create a virtual environment (optional but recommended):
+- python -m venv venv
+3. Activate the virtual environment:
+Windows:
+- .\venv\Scripts\activate
+macOS/Linux:
+- source venv/bin/activate
+4. Install the required packages:
+- pip install -r requirements.txt
+## Usage
+1. Start the FastAPI application:
+- uvicorn src.main:app --reload
+2. Access the API documentation at:
+- Swagger UI
+- Redoc
+3. To make a prediction, send a POST request to the /predict endpoint with the transaction data in JSON format. For example:
+{
+    "feature_1": value1,
+    "feature_2": value2,
+    ...
+}
+## Endpoints
+- GET /: Returns a welcome message.
+- POST /predict: Accepts transaction data and returns a prediction on whether the transaction is fraudulent.
+## Model Evaluation
+The application evaluates the model using metrics such as accuracy, precision, recall, F1 score, and ROC-AUC, which are printed to the console on startup.
+
 # License
 This project is licensed under the MIT License. See the LICENSE file for details.
 
